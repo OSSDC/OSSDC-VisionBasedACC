@@ -11,9 +11,9 @@ We have two initial demos videos here, showing how detection/tracking algoritms 
 
 - [Real time YOLO detection in OSSDC Simulator running TheCrew on PS4 30fps](https://www.youtube.com/watch?v=ANgDlNfDoAQ)
   - The code for the demo is here: 
-   - https://github.com/OSSDC/darknet
+    - https://github.com/OSSDC/darknet
   - See here instructions on how to run it:
-   - https://github.com/OSSDC/darknet/commit/dc76e5690c753ce093417e096313b390b5d5c2ae
+    - https://github.com/OSSDC/darknet/commit/dc76e5690c753ce093417e096313b390b5d5c2ae
 
 It can be noted in the videos above that SSD Tensorflow is more accurate than the Yolo version.
 
