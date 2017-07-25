@@ -17,7 +17,7 @@ We have two initial demos videos here, showing how detection/tracking algoritms 
 
 It can be noted in the videos above that SSD Tensorflow is more accurate than the Yolo version.
 
-Here are a few article with more details about VBACC and OSSDC:
+Here are a few articles with more details about VBACC and OSSDC:
   - How OSSDC was born: 
     - [SDC From 0 to 60 (*) in 4 weeks](https://medium.com/@mslavescu/from-0-to-60-in-4-weeks-f6463ffe28a9)
     - [Why do we need Open Source Self Driving Car development and how to get started](https://medium.com/@mslavescu/why-do-we-need-open-source-self-driving-car-development-and-how-to-get-started-f71d36f2bae4)
