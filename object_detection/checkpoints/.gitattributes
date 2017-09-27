@@ -1,0 +1,2 @@
+ssd_300_vgg.ckpt.data-00000-of-00001 filter=lfs diff=lfs merge=lfs -text
+ssd_300_vgg.ckpt.index filter=lfs diff=lfs merge=lfs -text
