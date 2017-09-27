@@ -3,8 +3,8 @@ Discuss requirments and develop code for #1-mvp-vbacc MVP (see also this channel
 
 We have two initial demos videos here, showing how detection/tracking algoritms can be used:
 
-- Update demo code is here (see run demo scripts):
-  - https://github.com/OSSDC/OSSDC-VisionBasedACC/tree/master/object_detection 
+- ### Update demo code is here (see run demo scripts):
+  - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/tree/master/object_detection 
 
 - [SSD Tensorflow based car detection and tracking demo for OSSDC.org VisionBasedACC PS3/PS4 simulator ](https://www.youtube.com/watch?v=dqnjHqwP68Y)
   - The code for the demo is here (see ossdc scripts): 
