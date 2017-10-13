@@ -318,32 +318,21 @@ if modelType=="tensorflow":
 
     NUM_CLASSES = 90
 
-    with tf.device('/gpu:0'):
-        detection_graph = tf.Graph()
-        with detection_graph.as_default():
-            od_graph_def = tf.GraphDef()
-            with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
-                serialized_graph = fid.read()
-                od_graph_def.ParseFromString(serialized_graph)
-                tf.import_graph_def(od_graph_def, name='')    
+    detection_graph = tf.Graph()
+    with detection_graph.as_default():
+        od_graph_def = tf.GraphDef()
+        with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+            serialized_graph = fid.read()
+            od_graph_def.ParseFromString(serialized_graph)
+            tf.import_graph_def(od_graph_def, name='')
     
-        label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-        categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
-        category_index = label_map_util.create_category_index(categories)
+    label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
+    categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
+    category_index = label_map_util.create_category_index(categories)
 
-        #with tf.device('/gpu:0'):
+    #with tf.device('/gpu:0'):
 
-        sess = tf.InteractiveSession(graph=detection_graph,config=tf.ConfigProto(log_device_placement=True)) #tf.InteractiveSession()
-            
-        # Definite input and output Tensors for detection_graph
-        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-        # Each box represents a part of the image where a particular object was detected.
-        detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-        # Each score represent how level of confidence for each of the objects.
-        # Score is shown on the result image, together with the class label.
-        detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
-        detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
-        num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+    sess = tf.InteractiveSession(graph=detection_graph) #,config=tf.ConfigProto(log_device_placement=True)) #tf.InteractiveSession()
 
 start_time = getCurrentClock()
 
@@ -457,200 +446,211 @@ if tracking>0:
 
 prevZoomImage = zoomImage
 
-while True:
-    #frame = cap.read()
-    #if True:
-    if sct is not None or webcam or cap.grab():
-        if sct is not None:
-            frame = numpy.asarray(sct.grab(mon))
-        else:
-            if webcam:
-                frame = cap.read()
+if 1==1:
+    while True:
+        #frame = cap.read()
+        #if True:
+        if sct is not None or webcam or cap.grab():
+            if sct is not None:
+                frame = numpy.asarray(sct.grab(mon))
             else:
-                flag, frame = cap.retrieve()    
-        if not flag:
-                continue
-        else:
-            frameCnt=frameCnt+1
-            nowMicro = getCurrentClock()
-            delta = (nowMicro-prevTime).total_seconds()
-            #print("%f " % (delta))
-            if delta>=1.0:
-                fpsValue = ((frameCnt-prevFrameCnt)/delta) 
-                print("FPS = %3.2f, Track points = %5d, Frame = %6d" % (fpsValue,len(tracks), frameCnt))
-                prevTime = nowMicro
-                prevFrameCnt=frameCnt
+                if webcam:
+                    frame = cap.read()
+                else:
+                    flag, frame = cap.retrieve()    
+            if not flag:
+                    continue
+            else:
+                frameCnt=frameCnt+1
+                nowMicro = getCurrentClock()
+                delta = (nowMicro-prevTime).total_seconds()
+                #print("%f " % (delta))
+                if delta>=1.0:
+                    fpsValue = ((frameCnt-prevFrameCnt)/delta) 
+                    print("FPS = %3.2f, Track points = %5d, Frame = %6d" % (fpsValue,len(tracks), frameCnt))
+                    prevTime = nowMicro
+                    prevFrameCnt=frameCnt
 
-            if skip>0:
-                skip=skip-1
-                continue
-            
-            if every>0:
-                every=every-1
-                continue
-            every=SKIP_EVERY
-            
-            count=count-1
-            if count==0:
-                break
+                if skip>0:
+                    skip=skip-1
+                    continue
+                
+                if every>0:
+                    every=every-1
+                    continue
+                every=SKIP_EVERY
+                
+                count=count-1
+                if count==0:
+                    break
 
-            img = frame
-            if processImage:    
-                if zoomImage>0:
-                    #crop center of image, crop width is output_side_length
-                    output_side_length = int(procWidth/zoomImage)
-                    height, width, depth = frame.shape
-                    #print (height, width, depth)
-                    height_offset = int((height - output_side_length) / 2)
-                    width_offset = int((width - output_side_length) / 2)
-                    #print (height, width, depth, height_offset,width_offset,output_side_length)
+                img = frame
+                if processImage:    
+                    if zoomImage>0:
+                        #crop center of image, crop width is output_side_length
+                        output_side_length = int(procWidth/zoomImage)
+                        height, width, depth = frame.shape
+                        #print (height, width, depth)
+                        height_offset = int((height - output_side_length) / 2)
+                        width_offset = int((width - output_side_length) / 2)
+                        #print (height, width, depth, height_offset,width_offset,output_side_length)
 
-                    #crop based on zoomImage value
-                    img = frame[height_offset:height_offset + output_side_length,width_offset:width_offset + output_side_length]
+                        #crop based on zoomImage value
+                        img = frame[height_offset:height_offset + output_side_length,width_offset:width_offset + output_side_length]
 
-                    
-                if zoomImage!=prevZoomImage:
-                    #reset tracking
-                    tracks = []
-                    prevZoomImage = zoomImage
+                        
+                    if zoomImage!=prevZoomImage:
+                        #reset tracking
+                        tracks = []
+                        prevZoomImage = zoomImage
 
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                start_time = getCurrentClock()
+                    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                    start_time = getCurrentClock()
 
-                if cropping:
-                    fullImg = img.copy()
-                    img=img[refPt[0][1]:refPt[1][1], refPt[0][0]:refPt[1][0]]
-
-                if modelType=="ssd":
-                    rclasses, rscores, rbboxes =  process_image(img)
-                elif modelType=="tensorflow":
-                    # the array based representation of the image will be used later in order to prepare the
-                    # result image with boxes and labels on it.
-                    cv2_im = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-                    pil_im = Image.fromarray(cv2_im)
-                    image_np = load_image_into_numpy_array(pil_im)
-                    # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
-                    image_np_expanded = np.expand_dims(image_np, axis=0)
-                    # Actual detection.
-                    (boxes, scores, classes, num) = sess.run(
-                        [detection_boxes, detection_scores, detection_classes, num_detections],
-                        feed_dict={image_tensor: image_np_expanded})
-
-                if len(rclasses)>0:
-                    nowMicro = getCurrentClock()
-                    if modelType=="ssd":
-                        print("# %s - %s - %0.4f seconds ---" % (frameCnt,rclasses.astype('|S3'), (nowMicro - start_time).total_seconds()))
-                    elif modelType=="tensorflow":
-                        print("# %s - %s - %0.4f seconds ---" % (frameCnt, classes.astype('|S3'), (nowMicro - start_time).total_seconds()))
-                    start_time = nowMicro
-                if showImage:
-                    if modelType=="ssd":
-                        visualization.bboxes_draw_on_img(img, rclasses, rscores, rbboxes, visualization.colors_plasma)
-                    elif modelType=="tensorflow":
-                        # Visualization of the results of a detection.
-                        vis_util.visualize_boxes_and_labels_on_image_array(
-                            img,
-                            np.squeeze(boxes),
-                            np.squeeze(classes).astype(np.int32),
-                            np.squeeze(scores),
-                            category_index,
-                            use_normalized_coordinates=True,
-                            line_thickness=8)
-                        #img = image_np
                     if cropping:
+                        fullImg = img.copy()
+                        img=img[refPt[0][1]:refPt[1][1], refPt[0][0]:refPt[1][0]]
+
+                    if modelType=="ssd":
+                        rclasses, rscores, rbboxes =  process_image(img)
+                    elif modelType=="tensorflow":
+                        # the array based representation of the image will be used later in order to prepare the
+                        # result image with boxes and labels on it.
+                        cv2_im = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+                        pil_im = Image.fromarray(cv2_im)
+                        image_np = load_image_into_numpy_array(pil_im)
+                        # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
+                        image_np_expanded = np.expand_dims(image_np, axis=0)
+
+                        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+                        # Each box represents a part of the image where a particular object was detected.
+                        boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+                        # Each score represent how level of confidence for each of the objects.
+                        # Score is shown on the result image, together with the class label.
+                        scores = detection_graph.get_tensor_by_name('detection_scores:0')
+                        classes = detection_graph.get_tensor_by_name('detection_classes:0')
+                        num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+                        # Actual detection.
+                        (boxes, scores, classes, num) = sess.run(
+                            [boxes, scores, classes, num_detections],
+                            feed_dict={image_tensor: image_np_expanded})
+                            
+                    if len(rclasses)>0:
+                        nowMicro = getCurrentClock()
+                        if modelType=="ssd":
+                            print("# %s - %s - %0.4f seconds ---" % (frameCnt,rclasses.astype('|S3'), (nowMicro - start_time).total_seconds()))
+                        elif modelType=="tensorflow":
+                            print("# %s - %s - %0.4f seconds ---" % (frameCnt, classes.astype('|S3'), (nowMicro - start_time).total_seconds()))
+                        start_time = nowMicro
+                    if showImage:
+                        if modelType=="ssd":
+                            visualization.bboxes_draw_on_img(img, rclasses, rscores, rbboxes, visualization.colors_plasma)
+                        elif modelType=="tensorflow":
+                            # Visualization of the results of a detection.
+                            vis_util.visualize_boxes_and_labels_on_image_array(
+                                img,
+                                np.squeeze(boxes),
+                                np.squeeze(classes).astype(np.int32),
+                                np.squeeze(scores),
+                                category_index,
+                                use_normalized_coordinates=True,
+                                line_thickness=8)
+
+                            #img = image_np
+                        if cropping:
+                            img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                            cv2.imshow("crop",img)
+
+                    if tracking>0:
+                        frame_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                        if len(tracks) > 0:
+                            img0, img1 = prev_gray, frame_gray
+                            p0 = np.float32([tr[-1] for tr in tracks]).reshape(-1, 1, 2)
+                            p1, st, err = cv2.calcOpticalFlowPyrLK(img0, img1, p0, None, **lk_params)
+                            p0r, st, err = cv2.calcOpticalFlowPyrLK(img1, img0, p1, None, **lk_params)
+                            d = abs(p0-p0r).reshape(-1, 2).max(-1)
+                            good = d < 1
+                            new_tracks = []
+                            for tr, (x, y), good_flag in zip(tracks, p1.reshape(-1, 2), good):
+                                if not good_flag:
+                                    continue
+                                tr.append((x, y))
+                                if len(tr) > track_len:
+                                    del tr[0]
+                                new_tracks.append(tr)
+                                cv2.circle(img, (x, y), 2, (0, 255, 0), -1)
+                            tracks = new_tracks
+                            if(showImage):
+                                cv2.polylines(img, [np.int32(tr) for tr in tracks], False, (0, 255, 0))
+                                #draw_str(img, (20, 20), 'track count: %5d FPS = %0.2f' % (len(tracks), fpsValue))
+                        frame_idx += 1
+                        prev_gray = frame_gray
+
+                        if frame_idx % detect_interval == 0:
+                            mask = np.zeros_like(frame_gray)
+                            mask[:] = 255
+                            for x, y in [np.int32(tr[-1]) for tr in tracks]:
+                                cv2.circle(mask, (x, y), 5, 0, -1)
+                            p = cv2.goodFeaturesToTrack(frame_gray, mask = mask, **feature_params)
+                            if p is not None:
+                                for x, y in np.float32(p).reshape(-1, 2):
+                                    tracks.append([(x, y)])
+
+                    if cropping:
+                        img = fullImg
+
+                    #if record == 9:
+                    #     cv2.imwrite('frame'.png',img)
+
+                if showImage:
+                    #visualization.bboxes_draw_on_img(img, rclasses, rscores, rbboxes, visualization.colors_plasma)
+                    #visualization.plt_bboxes(img, rclasses, rscores, rbboxes)
+                    if processImage:
                         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                        cv2.imshow("crop",img)
-
-                if tracking>0:
-                    frame_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-                    if len(tracks) > 0:
-                        img0, img1 = prev_gray, frame_gray
-                        p0 = np.float32([tr[-1] for tr in tracks]).reshape(-1, 1, 2)
-                        p1, st, err = cv2.calcOpticalFlowPyrLK(img0, img1, p0, None, **lk_params)
-                        p0r, st, err = cv2.calcOpticalFlowPyrLK(img1, img0, p1, None, **lk_params)
-                        d = abs(p0-p0r).reshape(-1, 2).max(-1)
-                        good = d < 1
-                        new_tracks = []
-                        for tr, (x, y), good_flag in zip(tracks, p1.reshape(-1, 2), good):
-                            if not good_flag:
-                                continue
-                            tr.append((x, y))
-                            if len(tr) > track_len:
-                                del tr[0]
-                            new_tracks.append(tr)
-                            cv2.circle(img, (x, y), 2, (0, 255, 0), -1)
-                        tracks = new_tracks
-                        if(showImage):
-                            cv2.polylines(img, [np.int32(tr) for tr in tracks], False, (0, 255, 0))
-                            #draw_str(img, (20, 20), 'track count: %5d FPS = %0.2f' % (len(tracks), fpsValue))
-                    frame_idx += 1
-                    prev_gray = frame_gray
-
-                    if frame_idx % detect_interval == 0:
-                        mask = np.zeros_like(frame_gray)
-                        mask[:] = 255
-                        for x, y in [np.int32(tr[-1]) for tr in tracks]:
-                            cv2.circle(mask, (x, y), 5, 0, -1)
-                        p = cv2.goodFeaturesToTrack(frame_gray, mask = mask, **feature_params)
-                        if p is not None:
-                            for x, y in np.float32(p).reshape(-1, 2):
-                                tracks.append([(x, y)])
-
-                if cropping:
-                    img = fullImg
-
-                #if record == 9:
-                #     cv2.imwrite('frame'.png',img)
-
-            if showImage:
-                #visualization.bboxes_draw_on_img(img, rclasses, rscores, rbboxes, visualization.colors_plasma)
-                #visualization.plt_bboxes(img, rclasses, rscores, rbboxes)
-                if processImage:
-                    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                if cropping:
-                    try:
+                    if cropping:
+                        try:
+                            #if len(tracks)<5:
+                            #    print('\a')
+                            draw_str(img, (20, 20), "FPS = %3.2f, Track points = %5d, Frame = %6d" % (fpsValue,len(tracks), frameCnt))
+                            cv2.rectangle(img, refPt[0], refPt[1], (0, 255, 0), 2)
+                            cv2.imshow("ossdc.org source: " + origVideoUrl, img)
+                        except Exception:
+                            pass
+                    else:
+                        #draw_str(img, (20, 20), 'track count: %5d FPS = %0.2f' % (len(tracks), fpsValue))
                         #if len(tracks)<5:
                         #    print('\a')
                         draw_str(img, (20, 20), "FPS = %3.2f, Track points = %5d, Frame = %6d" % (fpsValue,len(tracks), frameCnt))
-                        cv2.rectangle(img, refPt[0], refPt[1], (0, 255, 0), 2)
                         cv2.imshow("ossdc.org source: " + origVideoUrl, img)
-                    except Exception:
-                        pass
-                else:
-                    #draw_str(img, (20, 20), 'track count: %5d FPS = %0.2f' % (len(tracks), fpsValue))
-                    #if len(tracks)<5:
-                    #    print('\a')
-                    draw_str(img, (20, 20), "FPS = %3.2f, Track points = %5d, Frame = %6d" % (fpsValue,len(tracks), frameCnt))
-                    cv2.imshow("ossdc.org source: " + origVideoUrl, img)
-            if record:
-                #if processImage:
-                    #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-                newimage = cv2.resize(img,(procWidth,procHeight))
-                out.write(newimage)
-    key = cv2.waitKey(1)
-    if  key == 27:
-        break
-    elif key == ord('c'):
-        url = input("Enter new url: ")
-        cv2.destroyWindow("ossdc.org source: " + origVideoUrl)
-        origVideoUrl = url
-        cv2.namedWindow("ossdc.org source: " + origVideoUrl)
-        cv2.setMouseCallback("ossdc.org source: " + origVideoUrl, click_and_crop)
+                if record:
+                    #if processImage:
+                        #img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+                    newimage = cv2.resize(img,(procWidth,procHeight))
+                    out.write(newimage)
+        key = cv2.waitKey(1)
+        if  key == 27:
+            break
+        elif key == ord('c'):
+            url = input("Enter new url: ")
+            cv2.destroyWindow("ossdc.org source: " + origVideoUrl)
+            origVideoUrl = url
+            cv2.namedWindow("ossdc.org source: " + origVideoUrl)
+            cv2.setMouseCallback("ossdc.org source: " + origVideoUrl, click_and_crop)
 
-        videoUrl = getVideoURL(url)
-        cap = getCap(videoUrl)
-    elif key == ord('u'):
-        showImage= not(showImage)
-    elif key == ord('p'):
-        processImage= not(processImage)
-    elif key == ord('z'):
-        zoomImage=zoomImage+1
-        if zoomImage==10:
-            zoomImage=0
-    elif key == ord('x'):
-        zoomImage=zoomImage-1
-        if zoomImage<0:
-            zoomImage=0
+            videoUrl = getVideoURL(url)
+            cap = getCap(videoUrl)
+        elif key == ord('u'):
+            showImage= not(showImage)
+        elif key == ord('p'):
+            processImage= not(processImage)
+        elif key == ord('z'):
+            zoomImage=zoomImage+1
+            if zoomImage==10:
+                zoomImage=0
+        elif key == ord('x'):
+            zoomImage=zoomImage-1
+            if zoomImage<0:
+                zoomImage=0
 
 nowMicro = getCurrentClock()
 print("# %s -- %0.4f seconds - FPS: %0.4f ---" % (frameCnt, (nowMicro - initial_time).total_seconds(), frameCnt/(nowMicro - initial_time).total_seconds()))
