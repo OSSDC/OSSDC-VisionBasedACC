@@ -200,7 +200,6 @@ print("skipNr", skipNr)
 #A smooth drive in The Crew on PS4 - OSSDC Simulator ACC Train 30fps
 #videoUrl = subprocess.Popen("youtube-dl.exe -f22 -g https://www.youtube.com/watch?v=uuQlMCMT71I", shell=True, stdout=subprocess.PIPE).stdout.read()
 #videoUrl = videoUrl.decode("utf-8").rstrip()
-#videoUrl = "../../sdc/sdc-data/larrySmithFeb2017.mp4" 
 
 
 def getVideoURL(url):
