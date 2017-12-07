@@ -49,7 +49,11 @@ prevFrameCnt=0
 prevTime=getCurrentClock()
 
 for imgFile in sorted(glob.glob(url+"/*.jpg")):
-    bi = parseXML(url+os.path.splitext(os.path.basename(imgFile))[0]+".xml")
+    baseName = os.path.splitext(os.path.basename(imgFile))[0]
+    try:
+        bi = parseXML(url+baseName+".xml")
+    except Exception as e:
+        bi = [baseName+".jpg","",0,0,0,0]
     print(bi)
     key = cv2.waitKey(1)
     if  key == 27:
@@ -67,4 +71,6 @@ for imgFile in sorted(glob.glob(url+"/*.jpg")):
     
     draw_str(img, (20, 20), "FPS = %03.2f, Frame = %05d, Object = %8s, File = %10s" % (fpsValue,frameCnt,bi[1],bi[0]))
 
-    cv2.imshow("tracking", img)
+    newimage = img #cv2.resize(img,(int(640*2),int(360*2)))
+
+    cv2.imshow("tracking", newimage)
