@@ -3,6 +3,9 @@ Discuss requirments and develop code for #1-mvp-vbacc MVP (see also this channel
 
 We have two initial demos videos here, showing how detection/tracking algoritms can be used:
 
+- ### An initial demo with SfMLearner (for depth and ego-motion estimation from monocular videos) in Google Colaborator with GPU acceleration:
+  - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/SfMLearner_demo.ipynb
+
 - ### Super cool! Now we can run this for free in the cloud with GPU acceleration at about 15FPS on 720p Youtube video, try this IPython example in Google Colaboratory, updated with live streaming of processed output to ffplay:
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/ossdc_vbacc_object_detection_notebook_colaboratory.ipynb
 - ### Update demo code is here (see run demo scripts):
