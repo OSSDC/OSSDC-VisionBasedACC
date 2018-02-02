@@ -3,10 +3,10 @@ Discuss requirments and develop code for #1-mvp-vbacc MVP (see also this channel
 
 We have a few initial demos videos here, showing how detection/tracking/segmentation/depth estimation algoritms can be used:
 
-- ### An initial demo with Mask R-CNN (for object detection and instance segmentation) in Google Colaborator with GPU acceleration (see more demos bellow):
+- ### An initial demo with Mask R-CNN (for object detection and instance segmentation) in Google Colaboratory with GPU acceleration (see more demos bellow):
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/image-segmentation/ossdc_matterport_Mask_RCNN_colaboratory.ipynb
 
-- ### An initial demo with SfMLearner (for depth and ego-motion estimation from monocular videos) in Google Colaborator with GPU acceleration:
+- ### An initial demo with SfMLearner (for depth and ego-motion estimation from monocular videos) in Google Colaboratory with GPU acceleration:
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/SfMLearner_demo.ipynb
 
 - ### Super cool! Now we can run this for free in the cloud with GPU acceleration at about 15FPS on 720p Youtube video, try this IPython example in Google Colaboratory, updated with live streaming of processed output to ffplay:
