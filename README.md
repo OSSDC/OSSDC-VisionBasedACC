@@ -13,7 +13,9 @@ We have a few initial demos videos here, showing how detection/tracking/segmenta
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/ossdc_vbacc_object_detection_notebook_colaboratory.ipynb
 - ### Update demo code is here (see run demo scripts):
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/tree/master/object_detection 
-
+- ### Learning to Fly by Driving.  Training a drone to fly from monocular camera images and associated steering commands from a car. See the [paper](//rpg.ifi.uzh.ch/docs/RAL18_Loquercio.pdf).
+  - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/tree/master/steering
+.
 - [SSD Tensorflow based car detection and tracking demo for OSSDC.org VisionBasedACC PS3/PS4 simulator ](https://www.youtube.com/watch?v=dqnjHqwP68Y)
   - The code for the demo is here (see ossdc scripts): 
     - https://github.com/OSSDC/SSD-Tensorflow/tree/master/notebooks

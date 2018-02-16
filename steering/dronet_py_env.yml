@@ -1,0 +1,24 @@
+name: rpg_public_dronet
+channels:
+    - https://conda.anaconda.org/menpo
+    - conda-forge
+dependencies:
+    - python==3.5.2
+    - numpy
+    - matplotlib
+    - jupyter
+    - opencv3
+    - scipy
+    - h5py
+    - eventlet
+    - flask-socketio
+    - seaborn
+    - pandas
+    - python-gflags
+    - pydot
+    - graphviz
+    - scikit-learn
+    - pip:
+        - https://pypi.python.org/packages/5d/7c/ecd5e3009cc85b41a5313eb09693ddc976cf4afe694b6e151709810c944c/tensorflow_gpu-1.0.1-cp35-cp35m-manylinux1_x86_64.whl#md5=144baae1d0446e34426457721c1e0c90
+        - keras==2.0.3
+
