@@ -5,12 +5,23 @@ We have a few initial demos videos here, showing how detection/tracking/segmenta
 
 - ### An initial demo with Mask R-CNN (for object detection and instance segmentation) in Google Colaboratory with GPU acceleration (see more demos bellow):
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/image-segmentation/ossdc_matterport_Mask_RCNN_colaboratory.ipynb
+  
+  Open directly in Google Colaboratory:
+  https://colab.research.google.com/github/OSSDC/OSSDC-VisionBasedACC/blob/master/image-segmentation/ossdc_matterport_Mask_RCNN_colaboratory.ipynb
+
 
 - ### An initial demo with SfMLearner (for depth and ego-motion estimation from monocular videos) in Google Colaboratory with GPU acceleration:
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/SfMLearner_demo.ipynb
-
+  
+  Open directly in Google Colaboratory:
+  https://colab.research.google.com/github/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/SfMLearner_demo.ipynb
+  
 - ### Super cool! Now we can run this for free in the cloud with GPU acceleration at about 15FPS on 720p Youtube video, try this IPython example in Google Colaboratory, updated with live streaming of processed output to ffplay:
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/ossdc_vbacc_object_detection_notebook_colaboratory.ipynb
+  
+  Open directly in Google Colaboratory:
+  https://colab.research.google.com/github/OSSDC/OSSDC-VisionBasedACC/blob/master/object_detection/ossdc_vbacc_object_detection_notebook_colaboratory.ipynb
+  
 - ### Update demo code is here (see run demo scripts):
   - ### https://github.com/OSSDC/OSSDC-VisionBasedACC/tree/master/object_detection 
 - ### Learning to Fly by Driving.  Training a drone to fly from monocular camera images and associated steering commands from a car. See the [paper](//rpg.ifi.uzh.ch/docs/RAL18_Loquercio.pdf).
